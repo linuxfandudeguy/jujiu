@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Generator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">ASCII Art Generator</h1>
+        <div class="form-group">
+            <label for="ascii-text">Enter Text:</label>
+            <input type="text" class="form-control" id="ascii-text" placeholder="Type something...">
+        </div>
+        <button class="btn btn-primary mb-3" onclick="generateAsciiArt()">Generate ASCII Art</button>
+        <div id="asciiArtContainer"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to generate ASCII art
+        function generateAsciiArt() {
+            var text = $('#ascii-text').val();
+
+            var proxyUrl = 'https://uncors.vercel.app/?url=';
+            var apiUrl = 'https://asciified.thelicato.io/api/v2/ascii?text=' + encodeURIComponent(text);
+            var fetchUrl = proxyUrl + encodeURIComponent(apiUrl);
+
+            // Make an HTTP GET request to generate ASCII art
+            $.get(fetchUrl, function(asciiArt) {
+                $('#asciiArtContainer').html('<pre>' + asciiArt + '</pre>');
+            })
+            .fail(function(error) {
+                console.error('Failed to generate ASCII art:', error);
+                $('#asciiArtContainer').html('<p>Error generating ASCII art. Please try again later.</p>');
+            });
+        }
+    </script>
+</body>
+</html>
